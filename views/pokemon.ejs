@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("partials/head.ejs") %>
+        <title><%= data.name %>!</title>
+</head>
+
+<body class="text-center">
+    <header>
+        <h1 class="text-black p-3 m-0"> That's Your Pokemon </h1>
+    </header>
+
+    <nav>
+        <%- include("partials/nav.ejs") %>
+    </nav>
+
+    <h2><%= data.name %>!</h2>
+
+    <%- include("partials/footer.ejs") %>
+
+</body>
+
+</html>

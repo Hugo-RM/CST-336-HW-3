@@ -1,11 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What's Your Poke Birthday!</title>
+    <%- include("partials/head.ejs") %>
+        <title>What's Your PokeMon Birthday!</title>
 </head>
-<body>
-    <input type="date" name="birthday">
+
+<body class="text-center">
+    <header>
+        <h1 class="text-black p-3 m-0"> What's Your Pokemon </h1>
+    </header>
+
+    <nav>
+        <%- include("partials/nav.ejs") %>
+    </nav>
+
+    <p>Birthday:</p>
+    <form action="/displayPokemon" method="POST">
+        <input type="date" name="birthday">
+        <button type="submit">Get My Pokemon</button>
+    </form>
+
+    <%- include("partials/footer.ejs") %>
+
 </body>
+
 </html>
