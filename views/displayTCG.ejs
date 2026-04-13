@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("partials/head.ejs") %>
+    <title>TCG Card Info</title>
+</head>
+<body>
+    <nav>
+        <%- include("partials/nav.ejs") %>
+    </nav>
+
+    <div class="container py-5 text-center">
+        <h1 class="mb-4">That's Your Pokemon Card!</h1>
+
+        <div class="card shadow-sm mx-auto mb-4" style="max-width: 360px;">
+            <div class="card-body">
+                <h2 class="card-title text-capitalize"><%= pokeAPIData.name %></h2>
+                <img src="<%= pokemonCardImg %>" class="img-fluid mb-3">
+                <% if (flavorText) { %><p class="fst-italic text-muted"><%= flavorText %></p><% } %>
+                <p class="mb-0">Artist: <strong><%= pokemonCardArtist %></strong></p>
+            </div>
+        </div>
+
+        <% if (tcgplayer) { %>
+        <div class="mb-4">
+            <h4>TCGPlayer Prices &nbsp;<small><a href="<%= tcgplayer.url %>" target="_blank">view listing</a></small></h4>
+            <p class="text-muted small">Updated: <%= tcgplayer.updatedAt %></p>
+            <% for (const [variant, prices] of Object.entries(tcgplayer.prices)) { %>
+            <h6 class="text-capitalize"><%= variant %></h6>
+            <table class="table table-bordered table-sm w-auto mx-auto mb-3">
+                <thead class="table-dark"><tr><th>Market</th><th>Low</th><th>High</th></tr></thead>
+                <tbody><tr>
+                    <td>$<%= prices.market %></td>
+                    <td>$<%= prices.low %></td>
+                    <td>$<%= prices.high %></td>
+                </tr></tbody>
+            </table>
+            <% } %>
+        </div>
+        <% } %>
+
+        <% if (cardmarket) { %>
+        <div class="mb-4">
+            <h4>Cardmarket Prices &nbsp;<small><a href="<%= cardmarket.url %>" target="_blank">view listing</a></small></h4>
+            <p class="text-muted small">Updated: <%= cardmarket.updatedAt %></p>
+            <table class="table table-bordered table-sm w-auto mx-auto">
+                <thead class="table-dark"><tr><th>Avg Sell</th><th>Low</th><th>Trend</th><th>7-day Avg</th><th>30-day Avg</th></tr></thead>
+                <tbody><tr>
+                    <td>€<%= cardmarket.prices.averageSellPrice %></td>
+                    <td>€<%= cardmarket.prices.lowPrice %></td>
+                    <td>€<%= cardmarket.prices.trendPrice %></td>
+                    <td>€<%= cardmarket.prices.avg7 %></td>
+                    <td>€<%= cardmarket.prices.avg30 %></td>
+                </tr></tbody>
+            </table>
+        </div>
+        <% } %>
+    </div>
+
+    <audio autoplay>
+        <source src="<%= pokeAPIData.cries.latest %>" type="audio/ogg">
+    </audio>
+
+    <%- include("partials/footer.ejs") %>
+</body>
+</html>

@@ -38,11 +38,14 @@ app.post('/displayPokemon', async(req, res) => {
             throw new Error(`HTTP error: ${response.status}`);
         }
 
-        let data = await response.json();
+        const pokeAPIData = await response.json();
 
-        res.render('pokemon.ejs', { data, month, day, year });
+        console.log(pokeAPIData);
+
+        res.render('pokemon.ejs', { pokeAPIData, month, day, year });
     } catch (err) {
         console.log(err);
+        res.redirect('/');
     }
 });
 
@@ -53,23 +56,60 @@ app.get('/pokemonOfTheDay', async(req, res) => {
     const day = today.getDate();
     const year = today.getFullYear();
 
+    const pokeId = dayOfYear(month, day) % 1025 + 1;
 
     try {    
-        let url = `https://pokeapi.co/api/v2/pokemon/${month}${day}`;
+        const url = `https://pokeapi.co/api/v2/pokemon/${pokeId}`;
 
-        let response = await fetch(url);
+        const response = await fetch(url);
 
         if (!response.ok) {
             throw new Error(`HTTP error: ${response.status}`);
         }
 
-        let data = await response.json();
+        const pokeAPIData = await response.json();
 
-        res.render('pokemon.ejs', { data, month, day, year });
+        console.log(pokeAPIData);
+
+        res.render('pokemon.ejs', { pokeAPIData, month, day, year });
     } catch (err) {
         console.log(err);
+        res.redirect('/');
     }
 });
+
+app.post('/displayTCG', async(req, res) => {
+    const pokeId = req.body.pokeId;
+
+    if (!pokeId) {
+        return res.redirect('/');
+    }
+
+    try {
+        const url = `https://pokeapi.co/api/v2/pokemon/${pokeId}`;
+
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error: ${response.status}`);
+        }
+
+        const pokeAPIData = await response.json();
+
+        const tcgAPIData = (await pokemon.card.where({ q: `name:${pokeAPIData.name}`, pageSize: 1 })).data[0];
+
+        const pokemonCardImg = tcgAPIData.images.small;
+        const pokemonCardArtist = tcgAPIData.artist;
+        const flavorText = tcgAPIData.flavorText;
+        const tcgplayer = tcgAPIData.tcgplayer;
+        const cardmarket = tcgAPIData.cardmarket;
+
+        res.render('displayTCG.ejs', { pokeAPIData, pokemonCardImg, pokemonCardArtist, flavorText, tcgplayer, cardmarket });
+    } catch (err) {
+        console.log(err);
+        res.redirect('/');
+    }
+})
 
 app.listen(3000, () => {
     console.log('Server is running on http://localhost:3000');

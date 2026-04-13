@@ -3,23 +3,28 @@
 
 <head>
     <%- include("partials/head.ejs") %>
-        <title>What's Your PokeMon Birthday!</title>
+    <title>What's Your PokeMon Birthday!</title>
 </head>
 
-<body class="text-center">
-    <header>
-        <h1 class="text-black p-3 m-0"> What's Your Pokemon </h1>
-    </header>
-
+<body>
     <nav>
         <%- include("partials/nav.ejs") %>
     </nav>
 
-    <p>Birthday:</p>
-    <form action="/displayPokemon" method="POST">
-        <input type="date" name="birthday">
-        <button type="submit">Get My Pokemon</button>
-    </form>
+    <div class="container py-5 text-center">
+        <h1 class="mb-4">What's Your Pokemon?</h1>
+        <div class="card shadow-sm mx-auto" style="max-width: 400px;">
+            <div class="card-body">
+                <p class="card-text text-muted">Enter your birthday to find your Pokemon!</p>
+                <form action="/displayPokemon" method="POST">
+                    <div class="mb-3">
+                        <input type="date" name="birthday" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Get My Pokemon</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <%- include("partials/footer.ejs") %>
 

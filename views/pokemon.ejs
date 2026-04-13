@@ -3,19 +3,33 @@
 
 <head>
     <%- include("partials/head.ejs") %>
-        <title><%= data.name %>!</title>
+    <title><%= pokeAPIData.name %>!</title>
 </head>
 
-<body class="text-center">
-    <header>
-        <h1 class="text-black p-3 m-0"> That's Your Pokemon </h1>
-    </header>
-
+<body>
     <nav>
         <%- include("partials/nav.ejs") %>
     </nav>
 
-    <h2><%= data.name %>!</h2>
+    <div class="container py-5 text-center">
+        <h1 class="mb-4">That's Your Pokemon!</h1>
+        <div class="card shadow-sm mx-auto" style="max-width: 340px;">
+            <div class="card-body">
+                <h2 class="card-title text-capitalize"><%= pokeAPIData.name %></h2>
+                <img src="<%= pokeAPIData.sprites.front_default %>" class="img-fluid mb-2">
+                <p class="mb-1"><span class="badge bg-secondary">#<%= pokeAPIData.id %></span></p>
+                <p class="text-muted">Height: <%= pokeAPIData.height %> &nbsp;|&nbsp; Weight: <%= pokeAPIData.weight %></p>
+                <form action="/displayTCG" method="POST">
+                    <input type="hidden" name="pokeId" value="<%= pokeAPIData.id %>">
+                    <button type="submit" class="btn btn-primary w-100">Get My Pokemon Card</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <audio autoplay>
+        <source src="<%= pokeAPIData.cries.latest %>" type="audio/ogg">
+    </audio>
 
     <%- include("partials/footer.ejs") %>
 
